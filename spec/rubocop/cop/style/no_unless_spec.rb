@@ -1,0 +1,142 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe RuboCop::Cop::Style::NoUnless, :config do
+  # Multi-line unless
+
+  it 'flags a simple multi-line unless' do
+    expect_offense(<<~RUBY)
+      unless foo
+      ^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        bar
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !foo
+        bar
+      end
+    RUBY
+  end
+
+  it 'flags unless with an else branch' do
+    expect_offense(<<~RUBY)
+      unless foo
+      ^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        bar
+      else
+        baz
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !foo
+        bar
+      else
+        baz
+      end
+    RUBY
+  end
+
+  it 'flags a complex condition in unless, adding parens because precedence is not a toy' do
+    expect_offense(<<~RUBY)
+      unless foo && bar
+      ^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(foo && bar)
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags a complex or-condition in unless, adding parens because precedence is not a toy' do
+    expect_offense(<<~RUBY)
+      unless foo || bar
+      ^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(foo || bar)
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags indented unless blocks, preserving indentation' do
+    expect_offense(<<~RUBY)
+      def check
+        unless ready?
+        ^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+          go
+        end
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      def check
+        if !ready?
+          go
+        end
+      end
+    RUBY
+  end
+
+  # Modifier unless
+
+  it 'flags modifier unless' do
+    expect_offense(<<~RUBY)
+      bar unless foo
+      ^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !foo
+        bar
+      end
+    RUBY
+  end
+
+  it 'flags modifier unless with a complex condition, adding parens because precedence is not a toy' do
+    expect_offense(<<~RUBY)
+      send_email unless already_sent? || suppressed?
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(already_sent? || suppressed?)
+        send_email
+      end
+    RUBY
+  end
+
+  # Clean code — should not be flagged
+
+  it 'does not flag a plain if' do
+    expect_no_offenses(<<~RUBY)
+      if foo
+        bar
+      end
+    RUBY
+  end
+
+  it 'does not flag a negated if' do
+    expect_no_offenses(<<~RUBY)
+      if !foo
+        bar
+      end
+    RUBY
+  end
+
+  it 'does not flag a modifier if' do
+    expect_no_offenses(<<~RUBY)
+      bar if foo
+    RUBY
+  end
+end

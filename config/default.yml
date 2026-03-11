@@ -1,0 +1,16 @@
+---
+Style/NoUnless:
+  Description: >-
+    Use negated `if` instead of `unless`. Unless is cute. Unless is also
+    a brain trap. Please stop.
+  Enabled: true
+  VersionAdded: "0.1"
+  AutoCorrect: true
+
+Style/IfUnlessModifierMultiline:
+  Description: >-
+    Expand modifier `if` to multi-line form. Your code is not a tweet.
+    You have all the lines you want.
+  Enabled: true
+  VersionAdded: "0.1"
+  AutoCorrect: true

@@ -1,0 +1,172 @@
+# Welcome to rubocop config hell, where your linter has opinions about your soul.
+# This file enforces "sane conditionals" which is either visionary or insane.
+# Time will tell. (Spoiler: it's both.)
+
+require:
+  - rubocop-sane_conditionals # Naming something "sane" is peak developer hubris. Own it.
+  - rubocop-rspec
+
+inherit_mode:
+  merge:
+    - Include # Merging configs is sane. Not merging configs is chaos.
+
+AllCops:
+  NewCops: enable # Enable new cops sight-unseen. Optimism or masochism? Yes.
+
+# === SANE CONDITIONALS (your custom cops) ===
+
+Style/IfUnlessModifierMultiline:
+  Enabled: true # Modifier if reads right-to-left. Your brain isn't a compiler.
+
+Style/NoUnless:
+  Enabled: true # unless is syntactic sugar for torturing coworkers at 4pm Friday.
+
+# === RELAXED RUBY STYLE (we follow their blessed permission structure) ===
+# Below: cops we disabled because relaxed.ruby.style says it's cool.
+# This is how we justify ignoring The Grayson Style Guide.
+
+Style/Alias:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylealias
+
+Style/AsciiComments:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleasciicomments
+
+Style/BeginBlock:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylebeginblock
+
+Style/BlockDelimiters:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleblockdelimiters
+
+Style/CommentAnnotation:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylecommentannotation
+
+Style/Documentation:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styledocumentation
+
+Layout/DotPosition:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#layoutdotposition
+
+Style/DoubleNegation:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styledoublenegation
+
+Style/EndBlock:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleendblock
+
+Style/FormatString:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleformatstring
+
+Style/IfUnlessModifier:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleifunlessmodifier
+
+Style/Lambda:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylelambda
+
+Style/ModuleFunction:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylemodulefunction
+
+Style/MultilineBlockChain:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylemultilineblockchain
+
+Style/NegatedIf:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylenegatedif
+
+Style/NegatedWhile:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylenegatedwhile
+
+Style/NumericPredicate:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylenumericpredicate
+
+Style/ParallelAssignment:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleparallelassignment
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylepercentliteraldelimiters
+
+Style/PerlBackrefs:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleperlbackrefs
+
+Style/Semicolon:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylesemicolon
+
+Style/SingleLineMethods:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylesinglelinemethods
+
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#layoutspacebeforeblockbraces
+
+Layout/SpaceInsideParens:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#layoutspaceinsideparens
+
+Style/SpecialGlobalVars:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylespecialglobalvars
+
+Style/StringLiterals:
+  Enabled: true # We draw the line here. Single quotes only. Don't test us on this.
+  StyleGuide: https://relaxed.ruby.style/#stylestringliterals # (Yes, we're defying relaxed. Yes, on purpose.)
+
+Style/TrailingCommaInArguments:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styletrailingcommainarguments
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styletrailingcommainarrayliteral
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styletrailingcommainhashliteral
+
+Style/SymbolArray:
+  Enabled: false
+  StyleGuide: http://relaxed.ruby.style/#stylesymbolarray
+
+Style/WhileUntilModifier:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylewhileuntilmodifier
+
+Style/WordArray:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylewordarray
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#lintambiguousregexpliteral
+
+Lint/AssignmentInCondition:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#lintassignmentincondition
+
+RSpec/ExampleLength:
+  Enabled: false # Tests are long because life is long and setup is real.
+
+Metrics:
+  Enabled: false # Complexity is in the eye of the beholder. The beholder is tired.
+
+Naming/FileName:
+  Exclude:
+    - "lib/rubocop-sane_conditionals.rb" # The gem uses hyphens. The cop wants underscores. We don't pick sides.
