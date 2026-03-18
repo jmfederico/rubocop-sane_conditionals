@@ -4,11 +4,19 @@ Gem::Specification.new do |spec|
   spec.name = 'rubocop-sane_conditionals'
   spec.version = '1.0.0'
   spec.authors = ['Federico']
-  spec.summary = 'RuboCop cops for humans who can read.'
+  spec.summary = 'RuboCop cops for people who want to read code, not decode it.'
   spec.description = <<~DESC
-    Enforces conditional style that does not require you to hold the entire
-    sentence in working memory while your brain tries to figure out what
-    "do_thing if !foo unless bar" means. It means you hate your colleagues.
+    Ruby is a beautiful language. It is expressive, elegant, and reads almost like
+    English. This is exactly the problem.
+
+    At some point, someone decided that because Ruby can read like English, it
+    should read like English - and then they implemented the wrong kind of
+    English. The kind where the subject comes last.
+
+    This gem provides RuboCop cops that ban `unless` and multiline modifier
+    conditionals, replacing them with explicit `if` forms that are easier to
+    read, reason about, and review without mentally untangling a sentence that
+    somebody wrote backwards and then had the nerve to commit.
   DESC
   spec.homepage = 'https://github.com/jmfederico/rubocop-sane_conditionals'
   spec.license = 'MIT'
