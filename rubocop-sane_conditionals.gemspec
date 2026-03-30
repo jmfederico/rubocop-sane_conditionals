@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'lib/rubocop-sane_conditionals/version'
+
 Gem::Specification.new do |spec|
   spec.name = 'rubocop-sane_conditionals'
-  spec.version = '1.0.0'
+  spec.version = RuboCop::SaneConditionals::VERSION
   spec.authors = ['Federico']
   spec.summary = 'RuboCop cops for people who want to read code, not decode it.'
   spec.description = <<~DESC

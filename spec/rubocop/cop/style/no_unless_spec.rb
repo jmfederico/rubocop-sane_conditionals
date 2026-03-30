@@ -116,6 +116,49 @@ RSpec.describe RuboCop::Cop::Style::NoUnless, :config do
     RUBY
   end
 
+  it 'flags modifier unless with a comparison, adding parens because precedence is not a toy' do
+    expect_offense(<<~RUBY)
+      return unless date < Time.zone.today
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(date < Time.zone.today)
+        return
+      end
+    RUBY
+  end
+
+  it 'flags multi-line unless with a comparison operator' do
+    expect_offense(<<~RUBY)
+      unless count >= 10
+      ^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(count >= 10)
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags unless with equality check, adding parens' do
+    expect_offense(<<~RUBY)
+      unless status == :active
+      ^^^^^^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        deactivate
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(status == :active)
+        deactivate
+      end
+    RUBY
+  end
+
   # Clean code — should not be flagged
 
   it 'does not flag a plain if' do
