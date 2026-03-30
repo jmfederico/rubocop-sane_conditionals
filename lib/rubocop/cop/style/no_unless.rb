@@ -75,7 +75,8 @@ module RuboCop
 
         def requires_parens?(condition_node)
           condition_node.and_type? || condition_node.or_type? ||
-            (condition_node.send_type? && condition_node.binary_operation?)
+            (condition_node.send_type? && condition_node.binary_operation? &&
+              !condition_node.method?(:[]))
         end
 
         def autocorrect_modifier(corrector, node, negated_condition)

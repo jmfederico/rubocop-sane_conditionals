@@ -144,6 +144,21 @@ RSpec.describe RuboCop::Cop::Style::NoUnless, :config do
     RUBY
   end
 
+  it 'flags unless with subscript access without adding unnecessary parens' do
+    expect_offense(<<~RUBY)
+      unless slice[:symbol]
+      ^^^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !slice[:symbol]
+        do_thing
+      end
+    RUBY
+  end
+
   it 'flags unless with equality check, adding parens' do
     expect_offense(<<~RUBY)
       unless status == :active
@@ -155,6 +170,81 @@ RSpec.describe RuboCop::Cop::Style::NoUnless, :config do
     expect_correction(<<~RUBY)
       if !(status == :active)
         deactivate
+      end
+    RUBY
+  end
+
+  it 'flags unless with regex match operator, adding parens' do
+    expect_offense(<<~RUBY)
+      unless str =~ /pattern/
+      ^^^^^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(str =~ /pattern/)
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags unless with spaceship operator, adding parens' do
+    expect_offense(<<~RUBY)
+      unless (a <=> b) == 0
+      ^^^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !((a <=> b) == 0)
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags unless with arithmetic, adding parens' do
+    expect_offense(<<~RUBY)
+      unless a + b
+      ^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !(a + b)
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags unless with method call without adding unnecessary parens' do
+    expect_offense(<<~RUBY)
+      unless foo.bar?
+      ^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !foo.bar?
+        do_thing
+      end
+    RUBY
+  end
+
+  it 'flags unless with chained method call without adding unnecessary parens' do
+    expect_offense(<<~RUBY)
+      unless foo.bar.baz?
+      ^^^^^^^^^^^^^^^^^^^ Use negated `if` instead of `unless`. Your future self will thank you. Your colleagues will thank you. English teachers need not apply.
+        do_thing
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      if !foo.bar.baz?
+        do_thing
       end
     RUBY
   end
